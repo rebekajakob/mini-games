@@ -36,7 +36,8 @@ def print_victory_message(guess):
     print(VICTORY_MESSAGE + str(guess))
 
 
-def main_logic(guess, number_to_guess):
+def main_logic(number_to_guess):
+    guess = get_valid_number(GUESS_NUMBER_MESSAGE)
     while int(guess) != number_to_guess:
         if number_to_guess < int(guess):
             print(SMALLER_MESSAGE)
@@ -48,8 +49,7 @@ def main_logic(guess, number_to_guess):
 
 def number_guessing():
     number_to_guess = get_random_number()
-    guess = get_valid_number(GUESS_NUMBER_MESSAGE)
-    guess = main_logic(guess, number_to_guess)
+    guess = main_logic(number_to_guess)
     print_victory_message(guess)
 
 
