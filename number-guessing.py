@@ -13,7 +13,13 @@ def get_valid_number(input_text):
             return int(input_guess)
 
 
-number_to_guess = random.randint(0, 101)
+def get_random_number():
+    from_number = get_valid_number("Please give the from number! ")
+    to_number = get_valid_number("Please give the to number! ")
+    return random.randint(from_number, to_number)
+
+
+number_to_guess = get_random_number()
 print(number_to_guess)
 guess = get_valid_number("Please guess a number! ")
 
