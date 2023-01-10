@@ -38,10 +38,13 @@ def main_logic(guess, number_to_guess):
 
 def number_guessing():
     number_to_guess = get_random_number()
-    print(number_to_guess)
     guess = get_valid_number("Please guess a number! ")
     main_logic(guess, number_to_guess)
     print_victory_message(guess)
+
+
+if __name__ == '__main__':
+    number_guessing()
 
 
 
