@@ -23,17 +23,24 @@ def get_random_number():
     return random.randint(from_number, to_number)
 
 
-number_to_guess = get_random_number()
-print(number_to_guess)
-guess = get_valid_number("Please guess a number! ")
+def print_victory_message(guess):
+    print("You're right! the number is " + str(guess))
 
-while int(guess) != number_to_guess:
-    if number_to_guess < int(guess):
-        print("Number is smaller!")
-    else:
-        print("The number is bigger!")
+
+def number_guessing():
+    number_to_guess = get_random_number()
+    print(number_to_guess)
     guess = get_valid_number("Please guess a number! ")
 
-print("You're right! the number is " + str(guess))
+    while int(guess) != number_to_guess:
+        if number_to_guess < int(guess):
+            print("Number is smaller!")
+        else:
+            print("The number is bigger!")
+        guess = get_valid_number("Please guess a number! ")
+
+    print_victory_message(guess)
+
+
 
 
