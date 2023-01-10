@@ -27,11 +27,7 @@ def print_victory_message(guess):
     print("You're right! the number is " + str(guess))
 
 
-def number_guessing():
-    number_to_guess = get_random_number()
-    print(number_to_guess)
-    guess = get_valid_number("Please guess a number! ")
-
+def main_logic(guess, number_to_guess):
     while int(guess) != number_to_guess:
         if number_to_guess < int(guess):
             print("Number is smaller!")
@@ -39,6 +35,12 @@ def number_guessing():
             print("The number is bigger!")
         guess = get_valid_number("Please guess a number! ")
 
+
+def number_guessing():
+    number_to_guess = get_random_number()
+    print(number_to_guess)
+    guess = get_valid_number("Please guess a number! ")
+    main_logic(guess, number_to_guess)
     print_victory_message(guess)
 
 
