@@ -22,5 +22,9 @@ def get_place_for_random_number(empty_indexes):
     return random_index
 
 
-
+def get_random_number(probability_of_two):
+    random_number = random.randint(0, 100)
+    if random_number < probability_of_two:
+        return '2'
+    return '4'
 
