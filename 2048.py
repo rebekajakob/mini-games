@@ -17,4 +17,10 @@ def get_empty_indexes(board):
     return empty_indexes
 
 
+def get_place_for_random_number(empty_indexes):
+    random_index = random.randint(0, len(empty_indexes))
+    return random_index
+
+
+
 
