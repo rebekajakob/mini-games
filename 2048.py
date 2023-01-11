@@ -39,3 +39,18 @@ def create_starter_board():
         empty_board[random_place // 4][random_place % 4] = random_number
     return empty_board
 
+
+def print_board(board):
+    printed = ""
+    longest_number_size = max([len(max(lst, key=len)) for lst in board])
+    for row in range(len(board)):
+        printed += "-" * 5 * (longest_number_size+4) + "\n"
+        print_row = "|"
+        for col in range(len(board[row])):
+            empty_space_len = 2 + ((longest_number_size - len(board[row][col])) // 2)
+            print_row += " " * empty_space_len + board[row][col] + " " * empty_space_len + "|"
+        print_row += "\n"
+        printed += print_row
+    printed += "-" * 5 * (longest_number_size+4) + "\n"
+    print(printed)
+
