@@ -62,14 +62,58 @@ def get_valid_direction():
     return get_direction_input
 
 
-def search_rest_of_row(col, row):
-    for index in range(col + 1, len(row)):
-        if row[index] != '0':
+def search_rest_of_row(row, col, from_index, to_index, direction):
+    for index in range(from_index, to_index):
+        if row[(len(row) + index * direction - 1) // len(row)] != '0':
             row[col] = row[index]
             row[index] = '0'
             return row
     return row
 
 
+board = create_starter_board()
+print_board(board)
+directions = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+direction_input = get_valid_direction()
 
+
+def place_horizontal(board, direction):
+    for row in board:
+        for col in range(0, len(row)):
+            if row[(len(row) + col * direction - 1) // len(row)] == '0':
+                if direction == 1:
+                    row = search_rest_of_row(row, col, col, len(row), direction)
+                else:
+                    row = search_rest_of_row(row, col, 0, col, direction)
+                if row[col] == '0':
+                    break
+
+
+def move_to_horizontal_edge(direction, from_index, to_index):
+    for row in board:
+        for col in range(from_index, len(row)):
+            if row[col * direction] == '0':
+                for index in range(col + 1, to_index):
+                    if row[index * direction] != '0':
+                        row[col * direction] = row[index * direction]
+                        row[index * direction] = '0'
+                        break
+                if row[col] == '0':
+                    break
+
+
+if direction_input == 'a':
+    move_to_horizontal_edge(1, 0, 4)
+    for row in board:
+        for col in range(1, len(row)):
+            if row[col] == row[col - 1]:
+                row[col - 1] = str(int(row[col - 1]) * 2)
+                row[col] = '0'
+
+if direction_input == 'd':
+    move_to_horizontal_edge(-1, 1, 5)
+
+
+
+print_board(board)
 
