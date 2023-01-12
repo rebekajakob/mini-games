@@ -62,4 +62,14 @@ def get_valid_direction():
     return get_direction_input
 
 
+def search_rest_of_row(col, row):
+    for index in range(col + 1, len(row)):
+        if row[index] != '0':
+            row[col] = row[index]
+            row[index] = '0'
+            return row
+    return row
+
+
+
 
