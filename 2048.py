@@ -54,3 +54,12 @@ def print_board(board):
     printed += "-" * 5 * (longest_number_size+4) + "\n"
     print(printed)
 
+
+def get_valid_direction():
+    get_direction_input = input("Choose a direction (w a s d): ").lower()
+    while get_direction_input not in ['w', 'a', 's', 'd']:
+        get_direction_input = input("Choose a valid direction (w a s d): ")
+    return get_direction_input
+
+
+
