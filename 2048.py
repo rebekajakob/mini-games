@@ -1,4 +1,5 @@
 import random
+import os
 
 
 # create board
@@ -45,6 +46,7 @@ def add_random_number(board, first_placement_chances):
 
 
 def print_board(board):
+    os.system('cls' if os.name == 'nt' else 'clear')
     printed = ""
     longest_number_size = max([len(max(lst, key=len)) for lst in board])
     for row in range(len(board)):
