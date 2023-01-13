@@ -33,11 +33,15 @@ def create_starter_board():
     empty_board = create_empty_board()
     first_placement_chances = [100, 70]
     for i in range(2):
-        empty_indexes = get_empty_indexes(empty_board)
-        random_place = get_place_for_random_number(empty_indexes)
-        random_number = get_random_number(first_placement_chances[i])
-        empty_board[random_place // 4][random_place % 4] = random_number
+        add_random_number(empty_board, first_placement_chances[i])
     return empty_board
+
+
+def add_random_number(board, first_placement_chances):
+    empty_indexes = get_empty_indexes(board)
+    random_place = get_place_for_random_number(empty_indexes)
+    random_number = get_random_number(first_placement_chances)
+    board[random_place // 4][random_place % 4] = random_number
 
 
 def print_board(board):
@@ -71,12 +75,6 @@ def search_rest_of_row(row, col, from_index, to_index, direction):
     return row
 
 
-board = create_starter_board()
-print_board(board)
-directions = [(0, 1), (0, -1), (-1, 0), (1, 0)]
-direction_input = get_valid_direction()
-
-
 def place_horizontal(board, direction):
     for row in board:
         for col in range(0, len(row)):
@@ -89,7 +87,7 @@ def place_horizontal(board, direction):
                     break
 
 
-def move_to_horizontal_edge(direction, from_index, to_index):
+def move_to_horizontal_edge(board, direction, from_index, to_index):
     for row in board:
         for col in range(from_index, len(row)):
             if row[col * direction] == '0':
@@ -98,22 +96,74 @@ def move_to_horizontal_edge(direction, from_index, to_index):
                         row[col * direction] = row[index * direction]
                         row[index * direction] = '0'
                         break
-                if row[col] == '0':
-                    break
 
 
-if direction_input == 'a':
-    move_to_horizontal_edge(1, 0, 4)
-    for row in board:
-        for col in range(1, len(row)):
-            if row[col] == row[col - 1]:
-                row[col - 1] = str(int(row[col - 1]) * 2)
-                row[col] = '0'
+def move(direction_input, board):
+    if direction_input == 'a':
+        move_to_horizontal_edge(board, 1, 0, 4)
+        for row in board:
+            for col in range(1, len(row)):
+                if row[col] != '0':
+                    if row[col] == row[col - 1]:
+                        row[col - 1] = str(int(row[col - 1]) * 2)
+                        row[col] = '0'
+        move_to_horizontal_edge(board, 1, 0, 4)
 
-if direction_input == 'd':
-    move_to_horizontal_edge(-1, 1, 5)
+    if direction_input == 'd':
+        move_to_horizontal_edge(board, -1, 1, 5)
+        for row in board:
+            for col in range(1, len(row)):
+                if row[-col] != '0':
+                    if row[-col] == row[-col - 1]:
+                        row[-col] = str(int(row[-col]) * 2)
+                        row[-col - 1] = '0'
+        move_to_horizontal_edge(board,-1, 1, 5)
+
+    if direction_input == 'w':
+        for col in range(0, len(board)):
+            for row in range(0, len(board)):
+                if board[row][col] == '0':
+                    for index in range(row, len(board)):
+                        if board[index][col] != '0':
+                            board[row][col] = board[index][col]
+                            board[index][col] = '0'
+                            break
+
+        for col in range(0, len(board)):
+            for row in range(0, len(board)):
+                if board[row][col] != '0':
+                    if board[row][col] == board[row + 1][col]:
+                        board[row][col] = str(int(board[row][col])*2)
+                        board[row + 1][col] = '0'
+
+    if direction_input == 's':
+        for col in range(0, len(board)):
+            for row in range(1, len(board)+1):
+                if board[-row][col] == '0':
+                    for index in range(row, len(board) + 1):
+                        if board[-index][col] != '0':
+                            board[-row][col] = board[-index][col]
+                            board[-index][col] = '0'
+                            break
+        for col in range(0, len(board)):
+            for row in range(1, len(board)+1):
+                if board[-row][col] != '0':
+                    if board[-row][col] == board[-row - 1][col]:
+                        board[-row][col] = str(int(board[-row][col])*2)
+                        board[-row - 1][col] = '0'
+
+
+def game_2048():
+    game_on = True
+    board = create_starter_board()
+    print_board(board)
+    while game_on is True:
+        direction_input = get_valid_direction()
+        move(direction_input, board)
+        print_board(board)
 
 
 
-print_board(board)
+if __name__ == '__main__':
+    game_2048()
 
