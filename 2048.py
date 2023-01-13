@@ -52,14 +52,44 @@ def print_board(board):
         print_row = "|"
         for col in range(len(board[row])):
             empty_space_len = (6 - len(board[row][col])) // 2
+            get_colored_text = color_numbers(board[row][col])
             if len(board[row][col]) % 2 != 0:
-                print_row += " " * empty_space_len + board[row][col] + " " * empty_space_len + "|"
+                print_row += " " * empty_space_len + get_colored_text + " " * empty_space_len + "|"
             else:
-                print_row += " " * (empty_space_len - 1) + board[row][col] + " " * empty_space_len + "|"
+                print_row += " " * (empty_space_len - 1) + get_colored_text + " " * empty_space_len + "|"
         print_row += "\n"
         printed += print_row
     printed += "-" * 5 * 5 + "\n"
     print(printed)
+
+
+def color_numbers(cell):
+    end = '\033[0m'
+    if cell == '0':
+        return ' '
+    elif cell == '2':
+        return '\033[94m' + '2' + end
+    elif cell == '4':
+        return '\033[38;5;205m' + '4' + end
+    elif cell == '8':
+        return '\033[38;2;243;134;48m' + '8' + end
+    elif cell == '16':
+        return '\033[1;36m' + '16' + end
+    elif cell == '32':
+        return '\033[1;32m' + '32' + end
+    elif cell == '64':
+        return '\033[1;33m' + '64' + end
+    elif cell == '128':
+        return '\033[1;35m' + '128' + end
+    elif cell == '256':
+        return '\033[92m' + '256' + end
+    elif cell == '514':
+        return '\033[96m' + '514' + end
+    elif cell == '1024':
+        return '\033[1;31m' + '1024' + end
+    else:
+        return cell
+
 
 
 def get_valid_direction():
