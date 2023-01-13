@@ -40,9 +40,10 @@ def create_starter_board():
 
 def add_random_number(board, first_placement_chances):
     empty_indexes = get_empty_indexes(board)
-    random_place = get_place_for_random_number(empty_indexes)
-    random_number = get_random_number(first_placement_chances)
-    board[random_place // 4][random_place % 4] = random_number
+    if len(empty_indexes) != 0:
+        random_place = get_place_for_random_number(empty_indexes)
+        random_number = get_random_number(first_placement_chances)
+        board[random_place // 4][random_place % 4] = random_number
 
 
 def print_board(board):
@@ -85,13 +86,12 @@ def color_numbers(cell):
         return '\033[1;35m' + '128' + end
     elif cell == '256':
         return '\033[92m' + '256' + end
-    elif cell == '514':
-        return '\033[96m' + '514' + end
+    elif cell == '512':
+        return '\033[96m' + '512' + end
     elif cell == '1024':
         return '\033[1;31m' + '1024' + end
     else:
         return cell
-
 
 
 def get_valid_direction():
@@ -133,6 +133,17 @@ def move_to_horizontal_edge(board, direction, from_index, to_index):
                         break
 
 
+def move_to_vertical_edge(board, direction, from_index, to_index):
+    for col in range(0, len(board)):
+        for row in range(from_index, to_index):
+            if board[row * direction][col] == '0':
+                for index in range(row, to_index):
+                    if board[index * direction][col] != '0':
+                        board[row * direction][col] = board[index * direction][col]
+                        board[index * direction][col] = '0'
+                        break
+
+
 def move(direction_input, board):
     if direction_input == 'a':
         move_to_horizontal_edge(board, 1, 0, 4)
@@ -155,15 +166,7 @@ def move(direction_input, board):
         move_to_horizontal_edge(board,-1, 1, 5)
 
     if direction_input == 'w':
-        for col in range(0, len(board)):
-            for row in range(0, len(board)):
-                if board[row][col] == '0':
-                    for index in range(row, len(board)):
-                        if board[index][col] != '0':
-                            board[row][col] = board[index][col]
-                            board[index][col] = '0'
-                            break
-
+        move_to_vertical_edge(board, 1, 0, len(board))
         for col in range(0, len(board)):
             for row in range(0, len(board)):
                 if board[row][col] != '0':
@@ -171,33 +174,37 @@ def move(direction_input, board):
                         if board[row][col] == board[row + 1][col]:
                             board[row][col] = str(int(board[row][col])*2)
                             board[row + 1][col] = '0'
+        move_to_vertical_edge(board, 1, 0, len(board))
 
     if direction_input == 's':
-        for col in range(0, len(board)):
-            for row in range(1, len(board)+1):
-                if board[-row][col] == '0':
-                    for index in range(row, len(board) + 1):
-                        if board[-index][col] != '0':
-                            board[-row][col] = board[-index][col]
-                            board[-index][col] = '0'
-                            break
+        move_to_vertical_edge(board, -1, 1, len(board)+1)
         for col in range(0, len(board)):
             for row in range(1, len(board)):
                 if board[-row][col] != '0':
                     if board[-row][col] == board[-row - 1][col]:
                         board[-row][col] = str(int(board[-row][col])*2)
                         board[-row - 1][col] = '0'
+        move_to_vertical_edge(board, -1, 1, len(board) + 1)
+
+
+def is_winning(board):
+    for row in board:
+        if '2048' in row:
+            return True
 
 
 def game_2048():
     game_on = True
     board = create_starter_board()
     print_board(board)
-    while game_on is True:
+    while game_on:
         direction_input = get_valid_direction()
         move(direction_input, board)
         add_random_number(board, 70)
         print_board(board)
+        if is_winning(board):
+            game_on = False
+            print("You win!")
 
 
 if __name__ == '__main__':
