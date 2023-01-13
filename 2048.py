@@ -163,6 +163,23 @@ def sum_numbers_horizontal(board, direction, to_index):
                     row[col * direction] = '0'
 
 
+def can_be_sum_vertical(board, direction, from_index, to_index):
+    for col in range(0, len(board)):
+        for row in range(from_index, len(board)):
+            if board[row * direction][col] != '0':
+                if row != to_index:
+                    if board[row * direction][col] == board[(row + 1) * direction][col]:
+                        return True
+
+
+def can_be_sum_horizontal(board, direction, to_index):
+    for row in board:
+        for col in range(1, to_index):
+            if row[col * direction] != '0':
+                if row[col * direction] == row[(col - 1) * direction]:
+                    return True
+
+
 def move(direction_input, board):
     if direction_input == 'a':
         move_to_horizontal_edge(board, 1, 0, 4)
@@ -185,6 +202,19 @@ def move(direction_input, board):
         move_to_vertical_edge(board, -1, 1, len(board) + 1)
 
 
+def is_lose(board):
+    free_rows = 0
+    for row in board:
+        if '0' in row:
+            free_rows += 1
+    if (can_be_sum_horizontal(board, 1, 4) or can_be_sum_horizontal(board, -1, 5) or \
+            can_be_sum_vertical(board, 1, 0, len(board)-1) or can_be_sum_vertical(board, -1, 1, 0)):
+        return False
+    if free_rows == 0:
+        return True
+    return False
+
+
 def is_winning(board):
     for row in board:
         if '2048' in row:
@@ -203,6 +233,10 @@ def game_2048():
         if is_winning(board):
             game_on = False
             print("You win!")
+
+        if is_lose(board):
+            game_on = False
+            print("You lose!")
 
 
 if __name__ == '__main__':
