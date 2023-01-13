@@ -48,14 +48,17 @@ def print_board(board):
     printed = ""
     longest_number_size = max([len(max(lst, key=len)) for lst in board])
     for row in range(len(board)):
-        printed += "-" * 5 * (longest_number_size+4) + "\n"
+        printed += "-" * 5 * 5 + "\n"
         print_row = "|"
         for col in range(len(board[row])):
-            empty_space_len = 2 + ((longest_number_size - len(board[row][col])) // 2)
-            print_row += " " * empty_space_len + board[row][col] + " " * empty_space_len + "|"
+            empty_space_len = (6 - len(board[row][col])) // 2
+            if len(board[row][col]) % 2 != 0:
+                print_row += " " * empty_space_len + board[row][col] + " " * empty_space_len + "|"
+            else:
+                print_row += " " * (empty_space_len - 1) + board[row][col] + " " * empty_space_len + "|"
         print_row += "\n"
         printed += print_row
-    printed += "-" * 5 * (longest_number_size+4) + "\n"
+    printed += "-" * 5 * 5 + "\n"
     print(printed)
 
 
@@ -132,9 +135,10 @@ def move(direction_input, board):
         for col in range(0, len(board)):
             for row in range(0, len(board)):
                 if board[row][col] != '0':
-                    if board[row][col] == board[row + 1][col]:
-                        board[row][col] = str(int(board[row][col])*2)
-                        board[row + 1][col] = '0'
+                    if row != len(board)-1:
+                        if board[row][col] == board[row + 1][col]:
+                            board[row][col] = str(int(board[row][col])*2)
+                            board[row + 1][col] = '0'
 
     if direction_input == 's':
         for col in range(0, len(board)):
@@ -146,7 +150,7 @@ def move(direction_input, board):
                             board[-index][col] = '0'
                             break
         for col in range(0, len(board)):
-            for row in range(1, len(board)+1):
+            for row in range(1, len(board)):
                 if board[-row][col] != '0':
                     if board[-row][col] == board[-row - 1][col]:
                         board[-row][col] = str(int(board[-row][col])*2)
@@ -160,8 +164,8 @@ def game_2048():
     while game_on is True:
         direction_input = get_valid_direction()
         move(direction_input, board)
+        add_random_number(board, 70)
         print_board(board)
-
 
 
 if __name__ == '__main__':
