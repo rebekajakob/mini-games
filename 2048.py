@@ -144,46 +144,44 @@ def move_to_vertical_edge(board, direction, from_index, to_index):
                         break
 
 
+def sum_numbers_vertical(board, direction, from_index, to_index):
+    for col in range(0, len(board)):
+        for row in range(from_index, len(board)):
+            if board[row * direction][col] != '0':
+                if row != to_index:
+                    if board[row * direction][col] == board[(row + 1) * direction][col]:
+                        board[row * direction][col] = str(int(board[row * direction][col]) * 2)
+                        board[(row + 1) * direction][col] = '0'
+
+
+def sum_numbers_horizontal(board, direction, to_index):
+    for row in board:
+        for col in range(1, to_index):
+            if row[col * direction] != '0':
+                if row[col * direction] == row[(col - 1) * direction]:
+                    row[(col - 1) * direction] = str(int(row[(col - 1) * direction]) * 2)
+                    row[col * direction] = '0'
+
+
 def move(direction_input, board):
     if direction_input == 'a':
         move_to_horizontal_edge(board, 1, 0, 4)
-        for row in board:
-            for col in range(1, len(row)):
-                if row[col] != '0':
-                    if row[col] == row[col - 1]:
-                        row[col - 1] = str(int(row[col - 1]) * 2)
-                        row[col] = '0'
+        sum_numbers_horizontal(board, 1, 4)
         move_to_horizontal_edge(board, 1, 0, 4)
 
     if direction_input == 'd':
         move_to_horizontal_edge(board, -1, 1, 5)
-        for row in board:
-            for col in range(1, len(row)):
-                if row[-col] != '0':
-                    if row[-col] == row[-col - 1]:
-                        row[-col] = str(int(row[-col]) * 2)
-                        row[-col - 1] = '0'
-        move_to_horizontal_edge(board,-1, 1, 5)
+        sum_numbers_horizontal(board, -1, 5)
+        move_to_horizontal_edge(board, -1,  1, 5)
 
     if direction_input == 'w':
         move_to_vertical_edge(board, 1, 0, len(board))
-        for col in range(0, len(board)):
-            for row in range(0, len(board)):
-                if board[row][col] != '0':
-                    if row != len(board)-1:
-                        if board[row][col] == board[row + 1][col]:
-                            board[row][col] = str(int(board[row][col])*2)
-                            board[row + 1][col] = '0'
+        sum_numbers_vertical(board, 1, 0, len(board)-1)
         move_to_vertical_edge(board, 1, 0, len(board))
 
     if direction_input == 's':
         move_to_vertical_edge(board, -1, 1, len(board)+1)
-        for col in range(0, len(board)):
-            for row in range(1, len(board)):
-                if board[-row][col] != '0':
-                    if board[-row][col] == board[-row - 1][col]:
-                        board[-row][col] = str(int(board[-row][col])*2)
-                        board[-row - 1][col] = '0'
+        sum_numbers_vertical(board, -1, 1, 0)
         move_to_vertical_edge(board, -1, 1, len(board) + 1)
 
 
