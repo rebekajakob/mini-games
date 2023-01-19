@@ -1,8 +1,13 @@
 import random
 import os
 
+WIN_MESSAGE = "You win!"
+LOSE_MESSAGE = "You lose!"
+PERCENTAGE_OF_GENERATE_2 = 80
+CHOOSE_A_DIRECTION_MESSAGE = "Choose a direction (w a s d): "
+CHOOSE_A_VALID_DIRECTION_MESSAGE = "Choose a valid direction (w a s d): "
 
-# create board
+
 def create_empty_board():
     board = []
     for row in range(4):
@@ -32,7 +37,7 @@ def get_random_number(probability_of_two):
 
 def create_starter_board():
     empty_board = create_empty_board()
-    first_placement_chances = [100, 70]
+    first_placement_chances = [100, PERCENTAGE_OF_GENERATE_2]
     for i in range(2):
         add_random_number(empty_board, first_placement_chances[i])
     return empty_board
@@ -94,9 +99,9 @@ def color_numbers(cell):
 
 
 def get_valid_direction():
-    get_direction_input = input("Choose a direction (w a s d): ").lower()
+    get_direction_input = input(CHOOSE_A_DIRECTION_MESSAGE).lower()
     while get_direction_input not in ['w', 'a', 's', 'd']:
-        get_direction_input = input("Choose a valid direction (w a s d): ")
+        get_direction_input = input(CHOOSE_A_VALID_DIRECTION_MESSAGE)
     return get_direction_input
 
 
@@ -221,21 +226,21 @@ def is_winning(board):
 
 def game_2048():
     game_on = True
-    board = [['2', '0', '0', '0'], ['2', '0', '0', '0'], ['2', '0', '0', '0'], ['2', '4', '8', '2']]
+    board = create_starter_board()
     print_board(board)
     while game_on:
         direction_input = get_valid_direction()
         old_board = str(board)
         new_board = str(move(direction_input, board))
         if old_board != new_board:
-            add_random_number(board, 80)
+            add_random_number(board, PERCENTAGE_OF_GENERATE_2)
         print_board(board)
         if is_winning(board):
             game_on = False
-            print("You win!")
+            print(WIN_MESSAGE)
         if is_lose(board):
             game_on = False
-            print("You lose!")
+            print(LOSE_MESSAGE)
 
 
 if __name__ == '__main__':
