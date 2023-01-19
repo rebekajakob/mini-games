@@ -49,7 +49,6 @@ def add_random_number(board, first_placement_chances):
 def print_board(board):
     os.system('cls' if os.name == 'nt' else 'clear')
     printed = ""
-    longest_number_size = max([len(max(lst, key=len)) for lst in board])
     for row in range(len(board)):
         printed += "-" * 5 * 5 + "\n"
         print_row = "|"
@@ -154,13 +153,14 @@ def sum_numbers_vertical(board, direction, from_index, to_index):
                         board[(row + 1) * direction][col] = '0'
 
 
-def sum_numbers_horizontal(board, direction, to_index):
+def sum_numbers_horizontal(board, direction, from_index, to_index):
     for row in board:
-        for col in range(1, to_index):
+        for col in range(from_index, to_index):
             if row[col * direction] != '0':
-                if row[col * direction] == row[(col - 1) * direction]:
-                    row[(col - 1) * direction] = str(int(row[(col - 1) * direction]) * 2)
-                    row[col * direction] = '0'
+                if row != to_index:
+                    if row[col * direction] == row[(col - 1) * direction]:
+                        row[(col - 1) * direction] = str(int(row[(col - 1) * direction]) * 2)
+                        row[col * direction] = '0'
 
 
 def can_be_sum_vertical(board, direction, from_index, to_index):
@@ -183,23 +183,21 @@ def can_be_sum_horizontal(board, direction, to_index):
 def move(direction_input, board):
     if direction_input == 'a':
         move_to_horizontal_edge(board, 1, 0, 4)
-        sum_numbers_horizontal(board, 1, 4)
+        sum_numbers_horizontal(board, 1, 1, 4)
         move_to_horizontal_edge(board, 1, 0, 4)
-
     if direction_input == 'd':
         move_to_horizontal_edge(board, -1, 1, 5)
-        sum_numbers_horizontal(board, -1, 5)
+        sum_numbers_horizontal(board, -1, 2, 5)
         move_to_horizontal_edge(board, -1,  1, 5)
-
     if direction_input == 'w':
         move_to_vertical_edge(board, 1, 0, len(board))
         sum_numbers_vertical(board, 1, 0, len(board)-1)
         move_to_vertical_edge(board, 1, 0, len(board))
-
     if direction_input == 's':
         move_to_vertical_edge(board, -1, 1, len(board)+1)
         sum_numbers_vertical(board, -1, 1, 0)
         move_to_vertical_edge(board, -1, 1, len(board) + 1)
+    return board
 
 
 def is_lose(board):
@@ -207,7 +205,7 @@ def is_lose(board):
     for row in board:
         if '0' in row:
             free_rows += 1
-    if (can_be_sum_horizontal(board, 1, 4) or can_be_sum_horizontal(board, -1, 5) or \
+    if (can_be_sum_horizontal(board, 1, 4) or can_be_sum_horizontal(board, -1, 5) or
             can_be_sum_vertical(board, 1, 0, len(board)-1) or can_be_sum_vertical(board, -1, 1, 0)):
         return False
     if free_rows == 0:
@@ -223,17 +221,18 @@ def is_winning(board):
 
 def game_2048():
     game_on = True
-    board = create_starter_board()
+    board = [['2', '0', '0', '0'], ['2', '0', '0', '0'], ['2', '0', '0', '0'], ['2', '4', '8', '2']]
     print_board(board)
     while game_on:
         direction_input = get_valid_direction()
-        move(direction_input, board)
-        add_random_number(board, 70)
+        old_board = str(board)
+        new_board = str(move(direction_input, board))
+        if old_board != new_board:
+            add_random_number(board, 80)
         print_board(board)
         if is_winning(board):
             game_on = False
             print("You win!")
-
         if is_lose(board):
             game_on = False
             print("You lose!")
@@ -241,4 +240,3 @@ def game_2048():
 
 if __name__ == '__main__':
     game_2048()
-
