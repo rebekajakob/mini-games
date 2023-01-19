@@ -4,10 +4,11 @@ NOT_INTEGER_MESSAGE = "The input should be an integer NUMBER! "
 FROM_NUMBER_MESSAGE = "Please give the from number! "
 TO_NUMBER_MESSAGE = "Please give the to number! "
 SMALLER_FROM_MESSAGE = ["Please give a bigger number then ", "! "]
-VICTORY_MESSAGE = "You're right! the number is "
+VICTORY_MESSAGE = "You're right! The number is "
 SMALLER_MESSAGE = "Number is smaller!"
 BIGGER_MESSAGE = "The number is bigger!"
 GUESS_NUMBER_MESSAGE = "Please guess a number! "
+WELCOME_MESSAGE = "Welcome to the number guessing game!"
 
 
 def get_valid_number(input_text):
@@ -48,6 +49,7 @@ def main_logic(number_to_guess):
 
 
 def number_guessing():
+    print(WELCOME_MESSAGE)
     number_to_guess = get_random_number()
     guess = main_logic(number_to_guess)
     print_victory_message(guess)

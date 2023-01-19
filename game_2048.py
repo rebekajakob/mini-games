@@ -6,6 +6,7 @@ LOSE_MESSAGE = "You lose!"
 PERCENTAGE_OF_GENERATE_2 = 80
 CHOOSE_A_DIRECTION_MESSAGE = "Choose a direction (w a s d): "
 CHOOSE_A_VALID_DIRECTION_MESSAGE = "Choose a valid direction (w a s d): "
+WELCOME_MESSAGE = "Welcome to the 2048 game!"
 
 
 def create_empty_board():
@@ -225,6 +226,7 @@ def is_winning(board):
 
 
 def run_game_2048():
+    print(WELCOME_MESSAGE)
     game_on = True
     board = create_starter_board()
     print_board(board)
