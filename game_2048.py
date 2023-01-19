@@ -224,7 +224,7 @@ def is_winning(board):
             return True
 
 
-def game_2048():
+def run_game_2048():
     game_on = True
     board = create_starter_board()
     print_board(board)
@@ -244,4 +244,4 @@ def game_2048():
 
 
 if __name__ == '__main__':
-    game_2048()
+    run_game_2048()
